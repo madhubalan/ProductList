@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+//
 //extension Product: Decodable {
 //
 //    private enum CodingKeys: String, CodingKey {
@@ -16,8 +16,6 @@ import Foundation
 //        case price
 //        case image
 //        case desc
-//
-//
 //    }
 //
 //    public init(from decoder: Decoder) throws {

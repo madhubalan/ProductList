@@ -16,13 +16,16 @@ import UIKit
 class ProductTableViewCell: UITableViewCell {
     
     
-    @IBOutlet weak var productImage : UIImageView!
-    @IBOutlet weak var nameLbl : UILabel!
-    @IBOutlet weak var descLbl : UILabel!
-    @IBOutlet weak var PriceLbl : UILabel!
+    @IBOutlet weak var productImage: UIImageView!
+    
+    @IBOutlet weak var nameLbl: UILabel!
+    
+    @IBOutlet weak var descLbl: UILabel!
     
     
-
+    @IBOutlet weak var priceLbl: UILabel!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -35,9 +38,15 @@ class ProductTableViewCell: UITableViewCell {
     }
     
     func configCell(product: Product ){
-        self.nameLbl.text = product.name
-        self.descLbl.text = product.desc
-        self.PriceLbl.text = product.price
+        if let name = product.name{
+            nameLbl.text = name
+        }
+        if let desc = product.desc{
+            descLbl.text = desc
+        }
+        if let price = product.price{
+            priceLbl.text = price
+        }
     }
     
     @IBAction func addWhishListOnClick(sender: UIButton) {

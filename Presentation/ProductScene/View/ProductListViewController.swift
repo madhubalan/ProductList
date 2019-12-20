@@ -17,11 +17,18 @@ class ProductListViewController : UIViewController {
 
     var items : [Product]?
     
+    
+    
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+
+        let nib = UINib(nibName: "ProductTableViewCell", bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: "ProductTableViewCell")
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 600
+        
         self.modelView.loadProducts { [weak self] (result) in
               guard let welf = self else { return }
                       switch result {
@@ -59,7 +66,9 @@ extension ProductListViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProductTableViewCell", for: indexPath) as! ProductTableViewCell
         if let items = self.items, let product = items.first{
-            cell.configCell(product: product)
+            
+            cell.nameLbl.text = product.name
+//            cell.configCell(product: product)
         }
         return cell
     }
