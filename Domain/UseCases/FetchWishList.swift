@@ -17,3 +17,5 @@ protocol UpdateWishList {
     func addToWishList()
     func removeWishList()
 }
+
+

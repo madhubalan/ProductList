@@ -27,6 +27,7 @@ class DefaultDataService : DataService{
                 case .success(let data):
                     do {
                         print(String(decoding: data!, as: UTF8.self))
+                        let check = try JSONDecoder().decode([Product].self, from: data!)
                         let result : T = try JSONDecoder().decode([Product].self, from: data!) as! T
                         DispatchQueue.main.async { completion(.success(result)) }
                     } catch {

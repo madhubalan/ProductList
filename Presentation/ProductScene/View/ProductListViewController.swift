@@ -27,10 +27,9 @@ class ProductListViewController : UIViewController {
                       switch result {
                       case .success(let products):
                         welf.items = products
-//                        self.tableView.reloadData()
+                        welf.tableView.reloadData()
                       case .failure (let error):
                         let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-                                //  OK button
                                 let OKAction = UIAlertAction(title: "OK", style: .default) { (action:UIAlertAction!) in
                                     
                                 }

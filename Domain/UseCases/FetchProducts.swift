@@ -22,8 +22,6 @@ final class DefaultFetchProductsUseCase : FetchProductsUseCase{
     
     func execute(completion: @escaping (Result<[Product], Error>) -> Void) {
         self.productsRepository.productsList { result in
-//            guard let strongSelf = self else { return }
-            
             switch result {
             case .success:
                 // do some db caching if needed
