@@ -8,31 +8,42 @@
 
 import Foundation
 
- protocol DataService {
+protocol DataService {
     typealias CompletionHandler<T> = (Result<T, Error>) -> Void
-    
     func request<T: Decodable>(with endpoint: String, completion: @escaping CompletionHandler<T>)
 }
 
 class DefaultDataService : DataService{
+    
+    private let networkClient: NetworkClient
+    
+    init(networkClient: NetworkClient) {
+        self.networkClient = networkClient
+    }
+    
+    
     func request<T: Decodable>(with endpoint: String, completion: @escaping CompletionHandler<T>){
-        // use DI with init
-        let sessoin = URLSession(configuration: .default)
-        let client = NetworkClient(sessoin)
-        if let url = URL(string: NewsFeed.fetchProducts.getPath()){
+        
+        if let url = URL(string: endpoint){
             let request = URLRequest(url: url)
             
-            client.request(request: request) { result in
+            networkClient.request(request: request) { result in
                 switch result {
                 case .success(let data):
-                    do {
-                        print(String(decoding: data!, as: UTF8.self))
-                        let check = try JSONDecoder().decode([Product].self, from: data!)
-                        let result : T = try JSONDecoder().decode([Product].self, from: data!) as! T
-                        DispatchQueue.main.async { completion(.success(result)) }
-                    } catch {
-                        DispatchQueue.main.async { completion(.failure(error)) }
+                    guard let data = data else { return }
+                
+                    if let data = data as? T, (type(of: data) == T.self){
+                        DispatchQueue.main.async { completion(.success(data)) }
                     }
+                    else{
+                        do{
+                            let result : T = try JSONDecoder().decode(T.self, from: data)
+                            DispatchQueue.main.async { completion(.success(result)) }
+                        } catch {
+                            DispatchQueue.main.async { completion(.failure(error)) }
+                        }
+                    }
+                    
                     
                 case .failure(let error):
                     DispatchQueue.main.async { completion(.failure(error)) }

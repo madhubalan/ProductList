@@ -25,6 +25,7 @@ class ProductTableViewCell: UITableViewCell {
     
     @IBOutlet weak var priceLbl: UILabel!
     
+    private var viewModel: PoductListItemViewModel! { didSet { unbind(from: oldValue) } }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -37,17 +38,6 @@ class ProductTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func configCell(product: Product ){
-        if let name = product.name{
-            nameLbl.text = name
-        }
-        if let desc = product.desc{
-            descLbl.text = desc
-        }
-        if let price = product.price{
-            priceLbl.text = price
-        }
-    }
     
     @IBAction func addWhishListOnClick(sender: UIButton) {
        
@@ -55,6 +45,36 @@ class ProductTableViewCell: UITableViewCell {
     
     @IBAction func removeWhishListOnClick(sender: UIButton) {
       
+    }
+    
+    func configCell(with viewModel: PoductListItemViewModel ){
+        if let name = viewModel.name{
+            nameLbl.text = name
+        }
+        if let desc = viewModel.desc{
+            descLbl.text = desc
+        }
+        if let price = viewModel.price{
+            priceLbl.text = price
+        }
+        
+        viewModel.updatePosterImage()
+        
+        bind(to: viewModel)
+    }
+    
+    func bind(to viewModel: PoductListItemViewModel) {
+        viewModel.posterImage.observe(on: self) { [weak self] in
+            guard let imgData = $0 else {return}
+            self?.productImage?.image =  UIImage(data: imgData)
+            self?.layoutIfNeeded()
+        }
+           
+        
+    }
+    
+    private func unbind(from item: PoductListItemViewModel?) {
+        item?.posterImage.remove(observer: self)
     }
 
 }

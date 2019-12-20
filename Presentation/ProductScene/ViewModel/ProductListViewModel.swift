@@ -10,17 +10,37 @@ import Foundation
 
 class ProductListViewModel: NSObject {
     
-    let items: [Product]? = nil
-    let error : String? = nil
-    let productListUseCase : FetchProductsUseCase
-    typealias completionHandler = (Result<[Product], Error>) -> Void
+    private let posterImagesRepository: PosterImagesRepository
     
-    init(productListUseCase : FetchProductsUseCase) {
+    var items: Observable<[PoductListItemViewModel]> = Observable([PoductListItemViewModel]())
+    var error: Observable<String> = Observable("")
+    
+    let productListUseCase : FetchProductsUseCase
+    
+    typealias completionHandler = (Result<[PoductListItemViewModel], Error>) -> Void
+    
+    init(productListUseCase : FetchProductsUseCase, posterImagesRepository : PosterImagesRepository) {
         self.productListUseCase = productListUseCase
+        self.posterImagesRepository = posterImagesRepository
     }
     
-    func loadProducts(completion : @escaping completionHandler){
-        self.productListUseCase.execute(completion: completion)
+    func loadProducts(){
+        self.productListUseCase.execute { [weak self] result in
+            guard let welf = self else { return }
+                              switch result {
+                              case .success(let products):
+                                welf.items.value = products.map {
+                                PoductListItemViewModel(product: $0,
+                                                        posterImagesRepository: welf.posterImagesRepository)}
+                                
+                              case .failure(let error):
+                                welf.handle(error: error)
+            }
         }
+        }
+    
+    private func handle(error: Error) {
+           self.error.value = NSLocalizedString("Failed loading Posters", comment: "")
+       }
 }
 

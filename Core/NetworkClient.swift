@@ -9,7 +9,7 @@
 import UIKit
 
 
-enum NewsFeed {
+enum APIEndpoints {
     case fetchProducts
     
     func getPath() -> String {

@@ -20,6 +20,7 @@ class DefaultProductsRepository {
 extension DefaultProductsRepository: ProductsRepository {
 
     func productsList(completion: @escaping (Result<[Product], Error>) -> Void){
-        self.dataService.request(with: "", completion: completion)
+        
+        self.dataService.request(with: APIEndpoints.fetchProducts.getPath(), completion: completion)
     }
 }

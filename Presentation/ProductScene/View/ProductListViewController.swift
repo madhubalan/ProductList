@@ -10,70 +10,63 @@ import UIKit
 
 class ProductListViewController : UIViewController {
     
-     // Move to DI with init
-    let modelView = ProductListViewModel(productListUseCase:DefaultFetchProductsUseCase(productsRepository: DefaultProductsRepository(dataService: DefaultDataService())))
+     // Move to DI container with init
+    let viewModel = ProductListViewModel(productListUseCase:DefaultFetchProductsUseCase(productsRepository: DefaultProductsRepository(dataService: DefaultDataService(networkClient: NetworkClient(URLSession(configuration: .default))))), posterImagesRepository : DefaultPosterImagesRepository(dataService: DefaultDataService(networkClient: NetworkClient(URLSession(configuration: .default)))))
     
-    
-
-    var items : [Product]?
-    
+        
+      var items: [PoductListItemViewModel]! {
+          didSet { reload() }
+      }
     
     
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let nib = UINib(nibName: "ProductTableViewCell", bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: "ProductTableViewCell")
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 600
+        self.initializeInterface()
+        bind(to: viewModel)
+        loadProducts()
+    }
+    
+    func bind(to viewModel: ProductListViewModel) {
+           viewModel.items.observe(on: self) { [weak self] in self?.items = $0 }
+//           viewModel.error.observe(on: self) { [weak self] in //self?.showError($0) }
+       }
+    
+    func initializeInterface()  {
         
-        self.modelView.loadProducts { [weak self] (result) in
-              guard let welf = self else { return }
-                      switch result {
-                      case .success(let products):
-                        welf.items = products
-                        welf.tableView.reloadData()
-                      case .failure (let error):
-                        let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-                                let OKAction = UIAlertAction(title: "OK", style: .default) { (action:UIAlertAction!) in
-                                    
-                                }
-                                alertController.addAction(OKAction)
-                                welf.present(alertController, animated: true, completion:nil)
-                      }
-        }
-        
+         let nib = UINib(nibName: "ProductTableViewCell", bundle: nil)
+               tableView.register(nib, forCellReuseIdentifier: "ProductTableViewCell")
+               tableView.rowHeight = UITableView.automaticDimension
+               tableView.estimatedRowHeight = 600
+    }
+    
+    func reload(){
+         tableView.reloadData()
+    }
+    
+    func loadProducts(){
+        viewModel.loadProducts()
     }
 }
 
 extension ProductListViewController : UITableViewDataSource {
+    
+    
+     func numberOfSections(in tableView: UITableView) -> Int {
+         return 1
+     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let items = self.items{
-            return items.count
-        }
-        else{
-            return 0
-        }
-    }
-    
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        viewModel.items.value.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ProductTableViewCell", for: indexPath) as! ProductTableViewCell
-        if let items = self.items, let product = items.first{
-            
-            cell.nameLbl.text = product.name
-//            cell.configCell(product: product)
+        if let items = self.items {
+            cell.configCell(with: items[indexPath.row])
         }
         return cell
     }
-    
-    
-    
 }
 
