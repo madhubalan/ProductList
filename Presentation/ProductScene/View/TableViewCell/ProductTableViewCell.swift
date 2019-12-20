@@ -56,7 +56,9 @@ class ProductTableViewCell: UITableViewCell {
         }
         if let price = viewModel.price{
             priceLbl.text = price
+            priceLbl.textColor = UIColor.hexStringToUIColor(hex:viewModel.priceDispalyColor)
         }
+        
         
         viewModel.updatePosterImage()
         
