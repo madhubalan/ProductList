@@ -10,5 +10,5 @@
 import Foundation
 
 protocol ProductsRepository {
-    func productsList(query: String, completion: @escaping (Result<[Product], Error>) -> Void)
+    func productsList(completion: @escaping (Result<[Product], Error>) -> Void)
 }

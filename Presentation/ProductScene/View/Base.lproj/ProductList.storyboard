@@ -7,10 +7,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Product List View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="ProductList" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ProductListViewController" customModule="ProductList" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -24,19 +24,33 @@
                                     <navigationItem title="Shoper" id="Shc-y5-WFh"/>
                                 </items>
                             </navigationBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Lg2-WO-wLX">
+                                <rect key="frame" x="0.0" y="88" width="414" height="808"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="yJz-Jy-cLP"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="4Aj-LE-MJu" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="8i3-JF-hYz"/>
                             <constraint firstItem="4Aj-LE-MJu" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="FRK-Bf-ilS"/>
                             <constraint firstItem="4Aj-LE-MJu" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="MCl-xd-4zo"/>
+                            <constraint firstItem="Lg2-WO-wLX" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="aBc-Q4-7rR"/>
+                            <constraint firstItem="Lg2-WO-wLX" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="atP-2L-xeN"/>
+                            <constraint firstItem="Lg2-WO-wLX" firstAttribute="top" secondItem="4Aj-LE-MJu" secondAttribute="bottom" id="gkS-pk-QA5"/>
+                            <constraint firstAttribute="bottom" secondItem="Lg2-WO-wLX" secondAttribute="bottom" id="z9I-tC-xHg"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="tableView" destination="Lg2-WO-wLX" id="55b-W6-pRJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-97" y="131"/>
+            <point key="canvasLocation" x="-251" y="117"/>
         </scene>
     </scenes>
 </document>

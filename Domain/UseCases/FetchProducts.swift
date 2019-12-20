@@ -12,4 +12,26 @@ protocol FetchProductsUseCase {
     func execute(completion: @escaping (Result<[Product], Error>) -> Void)
 }
 
+final class DefaultFetchProductsUseCase : FetchProductsUseCase{
+    
+     private let productsRepository: ProductsRepository
+    
+    init(productsRepository: ProductsRepository) {
+        self.productsRepository = productsRepository
+    }
+    
+    func execute(completion: @escaping (Result<[Product], Error>) -> Void) {
+        self.productsRepository.productsList { result in
+//            guard let strongSelf = self else { return }
+            
+            switch result {
+            case .success:
+                // do some db caching if needed
+                completion(result)
+            case .failure:
+                completion(result)
+            }
+        }
+    }
+}
 

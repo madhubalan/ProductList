@@ -9,7 +9,9 @@
 import Foundation
 
 struct Product {
+    let pid : String
     let name: String
     let price: String
-    let image: String?
+    let desc: String
+    let image: String
 }

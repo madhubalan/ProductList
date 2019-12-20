@@ -20,13 +20,13 @@ class DefaultDataService : DataService{
         let sessoin = URLSession(configuration: .default)
         let client = NetworkClient(sessoin)
         if let url = URL(string: NewsFeed.fetchProducts.getPath()){
-            
             let request = URLRequest(url: url)
             
             client.request(request: request) { result in
                 switch result {
                 case .success(let data):
                     do {
+                        print(String(decoding: data!, as: UTF8.self))
                         let result : T = try JSONDecoder().decode([Product].self, from: data!) as! T
                         DispatchQueue.main.async { completion(.success(result)) }
                     } catch {
