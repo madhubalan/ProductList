@@ -6,8 +6,19 @@
 //  Copyright © 2019 Test. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-class UserDefaultStorage: NSObject {
 
+class DefaultWishListRepository {
+
+    let storeService : StoreService
+
+    init(storeService : StoreService) {
+        self.storeService = storeService
+    }
+}
+
+extension DefaultWishListRepository: FetchWishListRepository  {
+
+    
 }
