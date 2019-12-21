@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct wishListItem {
+struct wishListItem : Codable {
        let pid : String
        let count: Int = 0
 }

@@ -9,7 +9,6 @@
 import Foundation
 
 protocol FetchWishListRepository {
-    func wishList(completion: @escaping (Result<[wishListItem], Error>) -> Void)
-    func addToWishList(productId : String)
-    func removeFromWishList(productId : String)
+   func wishList(completion: @escaping (Result<[wishListItem], Error>) -> Void)
+   func modifyWishList(wishList: [wishListItem])
 }
