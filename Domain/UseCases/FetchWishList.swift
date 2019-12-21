@@ -32,11 +32,12 @@ final class DefaultFetchFromWishListUseCase : FetchFromWishList, UpdateWishList 
     }
     
     func addToWishList(pid : String) {
-        self.fetchWishListRepository.addToWishList(productId: pid)
+
+//        self.fetchWishListRepository.modifyWishList(wishList: [wishListItem])
     }
     
     func removeWishList(pid : String) {
-        self.fetchWishListRepository.removeFromWishList(productId: pid)
+//        self.fetchWishListRepository.modifyWishList(wishList: [wishListItem])
     }
 }
 

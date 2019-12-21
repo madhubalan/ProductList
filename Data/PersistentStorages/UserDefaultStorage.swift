@@ -8,7 +8,7 @@
 
 import Foundation
 
-
+let kWishListKey = "wishList"
 class DefaultWishListRepository {
 
     let storeService : StorageService
@@ -19,21 +19,11 @@ class DefaultWishListRepository {
 }
 
 extension DefaultWishListRepository: FetchWishListRepository  {
+    func wishList(completion: @escaping (Result<[wishListItem], Error>) -> Void) {
+        self.storeService.getObjects(forKey: kWishListKey, completion: completion)
+    }
     
-//    func addToWishList(wishList: [wishListItem]) {
-//        <#code#>
-//    }
-//
-//    func removeFromWishList(productId: String) {
-//        <#code#>
-//    }
-    
-  
-//    func wishList(completion: @escaping (Result<[wishListItem], Error>) -> Void) {
-//        self.storeService.getObjects(forKey: "wishList", completion: completion)
-//    }
-//
-//    func modifyWishList(wishList: [wishListItem]) {
-//        self.storeService.storeObject(object:wishList, forKey: "wishList")
-//    }
+    func modifyWishList(wishList: [wishListItem]) {
+        self.storeService.storeObject(object:wishList, forKey: kWishListKey)
+    }
 }
